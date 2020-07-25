@@ -64,12 +64,11 @@ let APIKey = "a4a8fbe7c144be93020e3a7f15b622db"
 
 
 
-let coordinates = []
+
 
 
 // `&lat=${lat}&lon=${lon}`
 
-console.log(coordinates)
 
 
 
@@ -88,7 +87,6 @@ $.ajax({
 
         console.log(response1);
 
-        coordinates.push(response1.city.coord)
         
         // this will give me an average out of the next 5 days. I chose 11am. 
         for (let i = 5; i < response1.list.length; i+=8) {
@@ -118,35 +116,42 @@ $.ajax({
             
 
         } 
+        
+        return response1.city.coord
           
       })
-
-    let currentWeatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${searchKey}&appid=${APIKey}`;
-
-      $.ajax({
-          url: currentWeatherURL,
-          method: "GET"
-      })
         .then(function(response2) {
+            console.log(response2)
+            let uvURL = `http://api.openweathermap.org/data/2.5/uvi?appid=${APIKey}&lat=${response2.lat}&lon=${response2.lon}`
+
+     $.ajax({
+         url: uvURL,
+         method: "GET"
+     })
+        .then(function(response3){
+            console.log(uvURL)
+            console.log(response3)
+
+        })
+
+    })
+
+    // let currentWeatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${searchKey}&appid=${APIKey}`;
+
+    //   $.ajax({
+    //       url: currentWeatherURL,
+    //       method: "GET"
+    //   })
+    //     .then(function(response2) {
             
             // console.log(currentWeatherURL);
 
             // console.log(response2);
 
 
-        })
+        // })
 
-    // let uvURL = `http://api.openweathermap.org/data/2.5/uvi?appid=${APIKey}&lat=${coordinates}`
-
-    //  $.ajax({
-    //      url: uvURL,
-    //      method: "GET"
-    //  })
-    //     .then(function(response3){
-    //         console.log(uvURL)
-    //         console.log(response3)
-
-    //     })
+    
 
       
       });
