@@ -1,0 +1,46 @@
+*  {
+    box-sizing: border-box;
+
+}
+
+section {
+    align-content: space-around;
+}
+
+.header {
+    width: 100%;
+    align-items: center;
+    background-color: cadetblue;
+    padding: 4%;
+    text-align: center;
+   
+}
+
+.saved {
+    text-align: initial;
+    background-color: lightskyblue;
+}
+
+.locationSearch {
+    text-align: center;
+  
+    width: 5%;
+}
+
+.current {
+    text-align: center;
+}
+
+
+
+.forecast {
+
+    background-color: lightskyblue;
+}
+
+
+
+
+
+
+  
