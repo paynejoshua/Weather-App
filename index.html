@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="stylesheet.css">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
     <link href='https://css.gg/search.css' rel='stylesheet'>
 
     <title>Weather App</title>
@@ -12,7 +12,7 @@
 <body>
     <section>
         <div class="w3-row">
-        <h1 class="header w3-col">Current Weather</h1>
+        <h1 class="header w3-col">Weather</h1>
     </div>
 
 
@@ -21,9 +21,9 @@
         <div class="w3-row-padding">
             
         <form id="search-fields">
-            <input class="w3-quarter w3-row-padding w3-mobile locationSearch" id="city-search" type="text" placeholder="City" value="Kirkland">
-            <input class="w3-quarter w3-row-padding w3-mobile locationSearch" id="state-search" type="text" placeholder="State Code" value="WA">
-            <input class="w3-quarter w3-row-padding w3-mobile locationSearch" id="country-search" type="text" placeholder="Country Code" value="US">
+            <input class="w3-col-4 w3-row-padding w3-mobile locationSearch" id="city-search" type="text" placeholder="City" >
+            <input class="w3-col-4 w3-row-padding w3-mobile locationSearch" id="state-search" type="text" placeholder="State Code" >
+            <input class="w3-col-4 w3-row-padding w3-mobile locationSearch" id="country-search" type="text" placeholder="Country Code" >
         </form> 
             <div>
             <i class="gg-search"></iclass></i>
@@ -34,11 +34,17 @@
                     <p>5 day forecast</p>
                     
                 </div>
+
                 <div class="w3-quarter w3-row-padding w3-mobile current"  id="current-weather">Current Weather Conditions:</div>
+                <div class="w3-quarter w3-row-padding w3-mobile searched" id="searched-cities"></div>
            
             </div>
+
+            
             
          </div>
+
+       
         
         
 </div>
@@ -48,7 +54,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <script type="text/JavaScript">
+let date = new Date()
+let todaysDate = date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear()
 
+console.log(test)
 
 $("#searchBtn").on("click", function(event){
 event.preventDefault();
@@ -61,15 +70,6 @@ let country = $("#country-search").val();
 let searchKey = city + "," + state + "," + country
 
 let APIKey = "a4a8fbe7c144be93020e3a7f15b622db"
-
-
-
-
-
-
-// `&lat=${lat}&lon=${lon}`
-
-
 
 
 let forecastURL = `https://api.openweathermap.org/data/2.5/forecast?q=${searchKey}&appid=${APIKey}`;
@@ -87,39 +87,69 @@ $.ajax({
 
         console.log(response1);
 
+        $(".forecast").empty()
         
-        // this will give me an average out of the next 5 days. I chose 11am. 
-        for (let i = 5; i < response1.list.length; i+=8) {
+        // this will give me an average out of the next 5 days.
+        for (let i = 0; i < response1.list.length; i+=8) {
+
+            
+
            let hourlyForecast =  response1.list[i].weather[0];
             
             let localDate = new Date(response1.list[i].dt * 1000).toLocaleDateString();
 
 
-            // console.log(response1.list[i]);
+            console.log(response1.list[i]);
             let forecastDate = $("<label>");
                 forecastDate.text(localDate)
+
             let forecastImg = $("<img>")
-                 let weatherIcon = `http://openweathermap.org/img/wn/${hourlyForecast.icon}@2x.png`;
+                let weatherIcon = `http://openweathermap.org/img/wn/${hourlyForecast.icon}@2x.png`;
                 forecastImg.attr("src", weatherIcon);
 
             
             let forecastTemp = $("<label>");
                 forecastTemp.text(((response1.list[i].main.temp-273.15) * 1.80 + 32).toFixed(0) + " F ");
+
             let forecastHumid = $("<label>");
                 forecastHumid.text(" Humidity: " + response1.list[i].main.humidity)
-            let forecast = $("<div class='forecastContainer'></div>")
+                
+            let forecast = $("<div class='forecastContainer'></div>");
 
-            forecast.append(forecastDate).append(forecastImg).append(forecastTemp).append(forecastHumid)
+            forecast.append(forecastDate).append(forecastImg).append(forecastTemp).append(forecastHumid);
 
 
-            $(".forecast").append(forecast)
+            $(".forecast").append(forecast);
+
             
 
         } 
+            $("#current-weather").append(forecast[0]);
         
+            // This sets the previous searched cities
+            let cityName = $("#city-search").val()
+
+            let searchedCities = $("<div class='capitalize'>")
+
+            searchedCities.text(cityName)
+
+            $("#searched-cities").append(searchedCities)
+
+            let citiesList = JSON.parse(localStorage.getItem("cities")) || [];
+
+            let newCity = {
+                "cityName": cityName
+            }
+
+            citiesList.push(newCity);
+            localStorage.setItem("cities", JSON.stringify(citiesList))
+
+            showCities();
+
         return response1.city.coord
           
-      })
+      }) 
+            // This gives me the UV index
         .then(function(response2) {
             console.log(response2)
             let uvURL = `http://api.openweathermap.org/data/2.5/uvi?appid=${APIKey}&lat=${response2.lat}&lon=${response2.lon}`
@@ -129,34 +159,22 @@ $.ajax({
          method: "GET"
      })
         .then(function(response3){
-            console.log(uvURL)
-            console.log(response3)
+        //    console.log(uvURL)
+        //    console.log(response3)
 
         })
 
     })
-
-    // let currentWeatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${searchKey}&appid=${APIKey}`;
-
-    //   $.ajax({
-    //       url: currentWeatherURL,
-    //       method: "GET"
-    //   })
-    //     .then(function(response2) {
-            
-            // console.log(currentWeatherURL);
-
-            // console.log(response2);
-
-
-        // })
-
-    
-
       
       });
-
-
+        // This allows the cities searched to show up after the page has been reloaded
+      $(document).ready(function showCities(){
+          let citiesList = JSON.parse(localStorage.getItem("cities")) || [];
+          $("#searched-cities").empty();
+          citiesList.forEach(function(citiesList){
+            $("#searched-cities").append("<div class='capitalize'>" + citiesList.cityName + "</div>")
+          });
+      });
 
 </script>
 
@@ -165,17 +183,24 @@ $.ajax({
 </html>
 
 <!-- GIVEN a weather dashboard with form inputs
-Part I
+// Part I
 // WHEN I search for a city
-// THEN I am presented with current and future conditions for that city and that city is added to the search history
+// THEN I am presented with current conditions for that city
+    // and future conditions for that city---DONE
+    // and that city is added to the search history---DONE
+
+
 // WHEN I view current weather conditions for that city
-// THEN I am presented with the city name, the date, an icon representation of weather conditions, the temperature, the humidity, the wind speed, and the UV index
+// THEN I am presented with:
+    //  the city name, the date, an icon representation of weather conditions, the temperature, the humidity, the wind speed, and the UV index
+
 // WHEN I view the UV index
 // THEN I am presented with a color that indicates whether the conditions are favorable, moderate, or severe
+
 // WHEN I view future weather conditions for that city
 // THEN I am presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, and the humidity
 
-Part II
+// Part II
 // WHEN I click on a city in the search history
 // THEN I am again presented with current and future conditions for that city
 // WHEN I open the weather dashboard

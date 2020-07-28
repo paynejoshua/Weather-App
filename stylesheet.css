@@ -38,7 +38,9 @@ section {
     background-color: lightskyblue;
 }
 
-
+.capitalize {
+    text-transform: capitalize;
+}
 
 
 
