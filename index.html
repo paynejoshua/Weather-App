@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="stylesheet.css">
-    <!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href='https://css.gg/search.css' rel='stylesheet'>
 
     <title>Weather App</title>
@@ -21,9 +21,9 @@
         <div class="w3-row-padding">
             
         <form id="search-fields">
-            <input class="w3-col-4 w3-row-padding w3-mobile locationSearch" id="city-search" type="text" placeholder="City" >
-            <input class="w3-col-4 w3-row-padding w3-mobile locationSearch" id="state-search" type="text" placeholder="State Code" >
-            <input class="w3-col-4 w3-row-padding w3-mobile locationSearch" id="country-search" type="text" placeholder="Country Code" >
+            <input class="w3-col-4 w3-row-padding w3-mobile locationSearch" id="city-search" type="text" placeholder="City" value="Kirkland"> 
+            <input class="w3-col-4 w3-row-padding w3-mobile locationSearch" id="state-search" type="text" placeholder="State Code" value="WA" > 
+            <input class="w3-col-4 w3-row-padding w3-mobile locationSearch" id="country-search" type="text" placeholder="Country Code" value="us" > 
         </form> 
             <div>
             <i class="gg-search"></iclass></i>
@@ -36,7 +36,7 @@
                 </div>
 
                 <div class="w3-quarter w3-row-padding w3-mobile current"  id="current-weather">Current Weather Conditions:</div>
-                <div class="w3-quarter w3-row-padding w3-mobile searched" id="searched-cities"></div>
+                <div class="w3-quarter w3-row-padding w3-mobile searched" id="searched-cities">Previous</div>
            
             </div>
 
@@ -57,7 +57,7 @@
 let date = new Date()
 let todaysDate = date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear()
 
-console.log(test)
+
 
 $("#searchBtn").on("click", function(event){
 event.preventDefault();
@@ -88,6 +88,7 @@ $.ajax({
         console.log(response1);
 
         $(".forecast").empty()
+        $("#current-weather").empty()
         
         // this will give me an average out of the next 5 days.
         for (let i = 0; i < response1.list.length; i+=8) {
@@ -98,7 +99,7 @@ $.ajax({
             
             let localDate = new Date(response1.list[i].dt * 1000).toLocaleDateString();
 
-
+            // this sets the five day forecast
             console.log(response1.list[i]);
             let forecastDate = $("<label>");
                 forecastDate.text(localDate)
@@ -120,11 +121,34 @@ $.ajax({
 
 
             $(".forecast").append(forecast);
-
-            
+  
 
         } 
-            $("#current-weather").append(forecast[0]);
+
+         // this sets the current weather
+                // need to copy/create new variables for everything from line 97 to 119 but set it to index 0 for the response1.list loop
+                let currentWeather = response1.list[0].weather[0];
+                let currentDate = new Date(response1.list[0].dt * 1000).toLocaleDateString();
+                    
+                let today = $("<label>");
+                    today.text(currentDate);
+
+                let currentImg = $("<img>");
+                    let todaysIcon = `http://openweathermap.org/img/wn/${currentWeather.icon}@2x.png`
+                    currentImg.attr("src", todaysIcon)
+                
+                let currentTemp = $("<label>")
+                    currentTemp.text(((response1.list[0].main.temp-273.15) * 1.80 + 32).toFixed(0) + " F ")
+
+                let currentHumid = $("<label>");
+                    currentHumid.text(" Humidity: " + response1.list[0].main.humidity)
+                
+                let currentWeatherDisplay = $("<div>Current Weather Conditions</div>")
+
+                currentWeatherDisplay.append(currentWeather).append(currentImg).append(currentTemp).append(currentHumid)
+
+                $("#current-weather").append(currentWeatherDisplay)
+            
         
             // This sets the previous searched cities
             let cityName = $("#city-search").val()
