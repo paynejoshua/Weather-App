@@ -16,6 +16,13 @@ section {
    
 }
 
+
+
+.searchBtn {
+    height: 20px;
+    width: 25px;
+}
+
 .saved {
     text-align: initial;
     background-color: lightskyblue;
@@ -23,17 +30,23 @@ section {
 
 .locationSearch {
     text-align: center;
-  
-    width: 5%;
+    width: 10%;
 }
 
 .current {
     text-align: center;
+    background-color: green;
 }
 
+.searched {
+    background-color: indigo;
+}
 
+.forecastContainer {
+    display: inline-flex;
+}
 
-.forecast {
+.forecastStyle {
 
     background-color: lightskyblue;
 }
@@ -42,6 +55,9 @@ section {
     text-transform: capitalize;
 }
 
+.hide {
+    display: none;
+}
 
 
 

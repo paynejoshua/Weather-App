@@ -10,44 +10,53 @@
     <title>Weather App</title>
 </head>
 <body>
-    <section>
-        <div class="w3-row">
-        <h1 class="header w3-col">Weather</h1>
-    </div>
-
-
-    <div class="container">
-        
-        <div class="w3-row-padding">
-            
-        <form id="search-fields">
-            <input class="w3-col-4 w3-row-padding w3-mobile locationSearch" id="city-search" type="text" placeholder="City" value="Kirkland"> 
-            <input class="w3-col-4 w3-row-padding w3-mobile locationSearch" id="state-search" type="text" placeholder="State Code" value="WA" > 
-            <input class="w3-col-4 w3-row-padding w3-mobile locationSearch" id="country-search" type="text" placeholder="Country Code" value="us" > 
-        </form> 
-            <div>
-            <i class="gg-search"></iclass></i>
-            <button id="searchBtn">Search</button>
+   <section>
+        <header>
+        <div class="w3-container">
+                <h1 class="header w3-col">Weather</h1>
         </div>
-            
-                <div class="w3-half w3-cell-bottom forecast">
-                    <p>5 day forecast</p>
-                    
+        <div class="w3-container">
+            <form id="search-fields">
+                <div class="w3-row">
+                        <input class="w3-row-padding w3-mobile locationSearch" id="city-search" type="text" placeholder="City" value="Kirkland"> 
+                        <input class="w3-row-padding w3-mobile locationSearch" id="state-search" type="text" placeholder="State Code" value="WA" > 
+                        <input class="w3-row-padding w3-mobile locationSearch" id="country-search" type="text" placeholder="Country Code" value="US" > 
+                        <button id="searchBtn"><i class="gg-search"></i></button>
                 </div>
+            </form>
+        </div>
+    </header>
+       
+    <br>
 
-                <div class="w3-quarter w3-row-padding w3-mobile current"  id="current-weather">Current Weather Conditions:</div>
-                <div class="w3-quarter w3-row-padding w3-mobile searched" id="searched-cities">Previous</div>
-           
+    <div class="w3-row-padding">
+
+        <div class="w3-third w3-section forecastStyle">
+            <div class="w3-card-4">
+                <p>5 day forecast</p>
+                <div class="forecast"></div>
             </div>
+        </div>
+    
+         
+        <div class="w3-third w3-section current">
+            <div class="w3-card-4">
+                <p>Current Weather Conditions:</p>
+                <ul id="current-weather" style="list-style-type: none;"></ul>
+            </div>
+        </div>
 
-            
-            
-         </div>
+     
+        <div class="w3-third w3-section searched">
+            <div class="w3-card-4">
+                <p>Previous:</p>
+                <div id="searched-cities"></div>
+            </div>
+        </div>
+
 
        
-        
-        
-</div>
+    </div>
     
 </section>
 
@@ -70,7 +79,6 @@ let country = $("#country-search").val();
 let searchKey = city + "," + state + "," + country
 
 let APIKey = "a4a8fbe7c144be93020e3a7f15b622db"
-
 
 let forecastURL = `https://api.openweathermap.org/data/2.5/forecast?q=${searchKey}&appid=${APIKey}`;
 
@@ -101,23 +109,28 @@ $.ajax({
 
             // this sets the five day forecast
             console.log(response1.list[i]);
+    
             let forecastDate = $("<label>");
                 forecastDate.text(localDate)
 
             let forecastImg = $("<img>")
                 let weatherIcon = `http://openweathermap.org/img/wn/${hourlyForecast.icon}@2x.png`;
                 forecastImg.attr("src", weatherIcon);
-
             
-            let forecastTemp = $("<label>");
+            
+            let forecastList = $("<ul style='list-style-type:none'</ul>")
+            let forecastTemp = $("<li>");
                 forecastTemp.text(((response1.list[i].main.temp-273.15) * 1.80 + 32).toFixed(0) + " F ");
 
-            let forecastHumid = $("<label>");
+            let forecastHumid = $("<li>");
                 forecastHumid.text(" Humidity: " + response1.list[i].main.humidity)
+
+                forecastList.append(forecastTemp).append(forecastHumid)
+            
                 
             let forecast = $("<div class='forecastContainer'></div>");
 
-            forecast.append(forecastDate).append(forecastImg).append(forecastTemp).append(forecastHumid);
+            forecast.append(forecastDate).append(forecastImg).append(forecastList);
 
 
             $(".forecast").append(forecast);
@@ -130,26 +143,42 @@ $.ajax({
                 let currentWeather = response1.list[0].weather[0];
                 let currentDate = new Date(response1.list[0].dt * 1000).toLocaleDateString();
                     
-                let today = $("<label>");
+                let today = $("<li>");
                     today.text(currentDate);
 
+                
                 let currentImg = $("<img>");
                     let todaysIcon = `http://openweathermap.org/img/wn/${currentWeather.icon}@2x.png`
                     currentImg.attr("src", todaysIcon)
                 
-                let currentTemp = $("<label>")
+                let currentTemp = $("<li>")
                     currentTemp.text(((response1.list[0].main.temp-273.15) * 1.80 + 32).toFixed(0) + " F ")
 
-                let currentHumid = $("<label>");
-                    currentHumid.text(" Humidity: " + response1.list[0].main.humidity)
+                let currentHumid = $("<li>");
+                    currentHumid.text("Humidity: " + response1.list[0].main.humidity)
                 
-                let currentWeatherDisplay = $("<div>Current Weather Conditions</div>")
+                let currentWind = $("<li>")
+                    currentWind.text("Wind: " + response1.list[0].wind.speed + "mph")
+                
+                let currentWeatherDisplay = $("<li></li>")
+                
+                let currentLocation = $("#city-search").val() + ", " + $("#state-search").val()
 
-                currentWeatherDisplay.append(currentWeather).append(currentImg).append(currentTemp).append(currentHumid)
+                currentWeatherDisplay.append(currentWeather).append(today).append(currentImg).append(currentTemp).append(currentHumid).append(currentWind).append(uvIndex)
 
-                $("#current-weather").append(currentWeatherDisplay)
+                $("#current-weather").append(currentLocation).append(currentWeatherDisplay)
             
-        
+// WHEN I view current weather conditions for that city
+// THEN I am presented with:
+//  the city name (DONE), 
+// the date (DONE), 
+// an icon representation of weather conditions (DONE), 
+// the temperature (DONE), 
+// the humidity (DONE), 
+// the wind speed (DONE),
+// the UV index (DONE)
+
+
             // This sets the previous searched cities
             let cityName = $("#city-search").val()
 
@@ -158,6 +187,7 @@ $.ajax({
             searchedCities.text(cityName)
 
             $("#searched-cities").append(searchedCities)
+           
 
             let citiesList = JSON.parse(localStorage.getItem("cities")) || [];
 
@@ -168,7 +198,7 @@ $.ajax({
             citiesList.push(newCity);
             localStorage.setItem("cities", JSON.stringify(citiesList))
 
-            showCities();
+            // showCities();
 
         return response1.city.coord
           
@@ -183,14 +213,20 @@ $.ajax({
          method: "GET"
      })
         .then(function(response3){
-        //    console.log(uvURL)
-        //    console.log(response3)
+           console.log(uvURL)
+           console.log(response3)
+
+           uvIndex.text("UV Index: " + response3.value)
+           
 
         })
 
     })
       
       });
+
+      let uvIndex = $("<li>")
+
         // This allows the cities searched to show up after the page has been reloaded
       $(document).ready(function showCities(){
           let citiesList = JSON.parse(localStorage.getItem("cities")) || [];
@@ -216,7 +252,13 @@ $.ajax({
 
 // WHEN I view current weather conditions for that city
 // THEN I am presented with:
-    //  the city name, the date, an icon representation of weather conditions, the temperature, the humidity, the wind speed, and the UV index
+    //  the city name (DONE), 
+    the date (), 
+    an icon representation of weather conditions (DONE), 
+    the temperature (DONE), 
+    the humidity (DONE), 
+    the wind speed (),
+    the UV index ()
 
 // WHEN I view the UV index
 // THEN I am presented with a color that indicates whether the conditions are favorable, moderate, or severe
