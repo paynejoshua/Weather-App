@@ -12,18 +12,21 @@
 <body>
    <section>
         <header>
-        <div class="w3-container">
-                <h1 class="header w3-col">Weather</h1>
-        </div>
+        <div class="w3-row-padding">
+                <div class="w-3 l11">
+                <h1 class="header">Weather</h1>
+            </div>
+        
         <div class="w3-container">
             <form id="search-fields">
                 <div class="w3-row">
-                        <input class="w3-row-padding w3-mobile locationSearch" id="city-search" type="text" placeholder="City" value="Kirkland"> 
-                        <input class="w3-row-padding w3-mobile locationSearch" id="state-search" type="text" placeholder="State Code" value="WA" > 
+                        <input class="w3-row-padding w3-mobile locationSearch" id="city-search" type="text" placeholder="City" value=""> 
+                        <input class="w3-row-padding w3-mobile locationSearch" id="state-search" type="text" placeholder="State Code" value="" > 
                         <input class="w3-row-padding w3-mobile locationSearch" id="country-search" type="text" placeholder="Country Code" value="US" > 
                         <button id="searchBtn"><i class="gg-search"></i></button>
                 </div>
             </form>
+        </div>
         </div>
     </header>
        
@@ -31,28 +34,38 @@
 
     <div class="w3-row-padding">
 
-        <div class="w3-third w3-section forecastStyle">
+        <div class="w3-col l4">
+            <div class="w3-container">
+        <div class="forecastStyle">
             <div class="w3-card-4">
                 <p>5 day forecast</p>
                 <div class="forecast"></div>
             </div>
         </div>
+    </div>
+    </div>
     
-         
-        <div class="w3-third w3-section current">
+    <div class="w3-col l4">
+        <div class="w3-container">
+        <div class="current">
             <div class="w3-card-4">
                 <p>Current Weather Conditions:</p>
                 <ul id="current-weather" style="list-style-type: none;"></ul>
             </div>
         </div>
+        </div>
+    </div>
 
-     
-        <div class="w3-third w3-section searched">
+    <div class="w3-col l4">
+        <div class="w3-container">
+        <div class="searched">
             <div class="w3-card-4">
                 <p>Previous:</p>
                 <div id="searched-cities"></div>
             </div>
         </div>
+        </div>
+    </div>
 
 
        
@@ -82,7 +95,9 @@ let APIKey = "a4a8fbe7c144be93020e3a7f15b622db"
 
 let forecastURL = `https://api.openweathermap.org/data/2.5/forecast?q=${searchKey}&appid=${APIKey}`;
 
-// create container div 
+let uvIndex = $("<li>")
+
+
 
 $.ajax({
       url: forecastURL,
@@ -224,8 +239,6 @@ $.ajax({
     })
       
       });
-
-      let uvIndex = $("<li>")
 
         // This allows the cities searched to show up after the page has been reloaded
       $(document).ready(function showCities(){
