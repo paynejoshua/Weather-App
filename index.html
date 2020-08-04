@@ -31,11 +31,23 @@
     </header>
        
     <br>
+    
 
     <div class="w3-row-padding">
 
         <div class="w3-col l4">
-            <div class="w3-container">
+            <div class="w3-container" id="searchedCard">
+            <div class="searched">
+                <div class="w3-card-4">
+                    <p>Previous:</p>
+                    <div id="searched-cities"></div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <div class="w3-col l4">
+            <div class="w3-container hide" id="forecastCard">
         <div class="forecastStyle">
             <div class="w3-card-4">
                 <p>5 day forecast</p>
@@ -46,7 +58,7 @@
     </div>
     
     <div class="w3-col l4">
-        <div class="w3-container">
+        <div class="w3-container hide" id="currentCard">
         <div class="current">
             <div class="w3-card-4">
                 <p>Current Weather Conditions:</p>
@@ -56,18 +68,25 @@
         </div>
     </div>
 
-    <div class="w3-col l4">
-        <div class="w3-container">
-        <div class="searched">
-            <div class="w3-card-4">
-                <p>Previous:</p>
-                <div id="searched-cities"></div>
+    <div id="uv-Modal" class="w3-modal">
+        <div class="w3-modal-content w3-card-4">
+            <div class="w3-container favorable">
+                <span onclick="document.getElementById('uv-Modal').style.display='none'" class="w3-button w3-white w3-display-topright">&times;</span>
+                <p id="uv-favorable">Todays reading is: </p>
+               <div class="w3-row">
+
+                   
+                <div class="w3-light-grey">
+                    <div class="w3-container w3-col w3-blue w3-center" style="height:24px; width:30%;">0.0-3.3 Favorable Conditions</div>
+                    <div class="w3-container w3-col w3-orange w3-center" style="height:24px; width:30%;">3.3-6.6 Moderate Conditions</div>
+                    <div class="w3-container w3-col w3-red w3-center" style="height:24px; width:30%;">6.6-10.0 Severe Conditions</div>
             </div>
         </div>
+                <p class="hide moderate" id="uv-moderate">Todays reading moderate</p>
+                <p class="hide high" id="uv-high">Todays reading high</p>
+            </div>
         </div>
     </div>
-
-
        
     </div>
     
@@ -79,7 +98,8 @@
 let date = new Date()
 let todaysDate = date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear()
 
-
+// clear out localStorage:
+// localStorage.clear()
 
 $("#searchBtn").on("click", function(event){
 event.preventDefault();
@@ -96,7 +116,14 @@ let APIKey = "a4a8fbe7c144be93020e3a7f15b622db"
 let forecastURL = `https://api.openweathermap.org/data/2.5/forecast?q=${searchKey}&appid=${APIKey}`;
 
 let uvIndex = $("<li>")
+uvIndex.addClass("uvIndex")
+uvIndex.attr("id", "uv-Index")
+uvIndex.addClass("w3-button")
 
+
+
+$("#forecastCard").removeClass("hide")
+$("#currentCard").removeClass("hide")
 
 
 $.ajax({
@@ -182,16 +209,7 @@ $.ajax({
                 currentWeatherDisplay.append(currentWeather).append(today).append(currentImg).append(currentTemp).append(currentHumid).append(currentWind).append(uvIndex)
 
                 $("#current-weather").append(currentLocation).append(currentWeatherDisplay)
-            
-// WHEN I view current weather conditions for that city
-// THEN I am presented with:
-//  the city name (DONE), 
-// the date (DONE), 
-// an icon representation of weather conditions (DONE), 
-// the temperature (DONE), 
-// the humidity (DONE), 
-// the wind speed (DONE),
-// the UV index (DONE)
+        
 
 
             // This sets the previous searched cities
@@ -232,6 +250,15 @@ $.ajax({
            console.log(response3)
 
            uvIndex.text("UV Index: " + response3.value)
+
+           $("#uv-Index").on("click", function(){
+            $("#uv-Modal").attr("style", "display:block")
+           }) 
+                 
+
+            
+
+            // <button onclick="document.getElementById('uv-Modal').style.display='block'" class="w3-button w3-black">UV Reading</button>
            
 
         })
@@ -256,22 +283,6 @@ $.ajax({
 </html>
 
 <!-- GIVEN a weather dashboard with form inputs
-// Part I
-// WHEN I search for a city
-// THEN I am presented with current conditions for that city
-    // and future conditions for that city---DONE
-    // and that city is added to the search history---DONE
-
-
-// WHEN I view current weather conditions for that city
-// THEN I am presented with:
-    //  the city name (DONE), 
-    the date (), 
-    an icon representation of weather conditions (DONE), 
-    the temperature (DONE), 
-    the humidity (DONE), 
-    the wind speed (),
-    the UV index ()
 
 // WHEN I view the UV index
 // THEN I am presented with a color that indicates whether the conditions are favorable, moderate, or severe

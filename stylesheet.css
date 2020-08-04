@@ -59,6 +59,24 @@ section {
     display: none;
 }
 
+.show {
+    display: block;
+}
 
+.favorable {
+    background-color :#2196F3;
+    color: white;
+
+}
+
+.moderate {
+    background-color: orange;
+    color: white;
+}
+
+.high {
+    background-color: red;
+    color: white;
+}
 
   
