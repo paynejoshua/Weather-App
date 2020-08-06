@@ -41,13 +41,14 @@
                 <div class="w3-card-4">
                     <p>Previous:</p>
                     <div id="searched-cities"></div>
+                    <button class="w3-button" id="clearBtn">Clear Searched Cities</button>
                 </div>
             </div>
             </div>
         </div>
 
         <div class="w3-col l4">
-            <div class="w3-container hide" id="forecastCard">
+            <div class="w3-container" id="forecastCard">
         <div class="forecastStyle">
             <div class="w3-card-4">
                 <p>5 day forecast</p>
@@ -58,7 +59,7 @@
     </div>
     
     <div class="w3-col l4">
-        <div class="w3-container hide" id="currentCard">
+        <div class="w3-container" id="currentCard">
         <div class="current">
             <div class="w3-card-4">
                 <p>Current Weather Conditions:</p>
@@ -99,10 +100,27 @@ let date = new Date()
 let todaysDate = date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear()
 
 // clear out localStorage:
-// localStorage.clear()
+$("#clearBtn").click(function() {
+   localStorage.clear();
+});
+
 
 $("#searchBtn").on("click", function(event){
 event.preventDefault();
+runWeather();
+
+});
+
+// these are testing my ability to be able to click on previously searched locations and have the weather for that location show up
+let test = "Kirkland, Wa"
+
+let test2 = test.split(",", 1[0]);
+
+console.log(test2[1])
+
+// ////////////////////////////////
+
+function runWeather(){
 let city = $("#city-search").val();
 
 let state = $("#state-search").val();
@@ -119,11 +137,6 @@ let uvIndex = $("<li>")
 uvIndex.addClass("uvIndex")
 uvIndex.attr("id", "uv-Index")
 uvIndex.addClass("w3-button")
-
-
-
-$("#forecastCard").removeClass("hide")
-$("#currentCard").removeClass("hide")
 
 
 $.ajax({
@@ -215,11 +228,17 @@ $.ajax({
             // This sets the previous searched cities
             let cityName = $("#city-search").val()
 
-            let searchedCities = $("<div class='capitalize'>")
+            let stateName = $("#state-search").val()
 
-            searchedCities.text(cityName)
+            let locationSearch = cityName + ", " + stateName
 
-            $("#searched-cities").append(searchedCities)
+            let searchedLocations = $("<div class='capitalize w3-button'>")    
+            searchedLocations.attr("id", "searched-location")       
+
+            searchedLocations.text(locationSearch)
+
+
+            $("#searched-cities").append(searchedLocations)
            
 
             let citiesList = JSON.parse(localStorage.getItem("cities")) || [];
@@ -227,11 +246,10 @@ $.ajax({
             let newCity = {
                 "cityName": cityName
             }
-
             citiesList.push(newCity);
             localStorage.setItem("cities", JSON.stringify(citiesList))
+            
 
-            // showCities();
 
         return response1.city.coord
           
@@ -254,27 +272,42 @@ $.ajax({
            $("#uv-Index").on("click", function(){
             $("#uv-Modal").attr("style", "display:block")
            }) 
-                 
-
-            
-
-            // <button onclick="document.getElementById('uv-Modal').style.display='block'" class="w3-button w3-black">UV Reading</button>
            
 
         })
 
     })
       
-      });
+      };
 
         // This allows the cities searched to show up after the page has been reloaded
       $(document).ready(function showCities(){
           let citiesList = JSON.parse(localStorage.getItem("cities")) || [];
           $("#searched-cities").empty();
           citiesList.forEach(function(citiesList){
-            $("#searched-cities").append("<div class='capitalize'>" + citiesList.cityName + "</div>")
+            $("#searched-cities").append("<div class='capitalize' id='searched-City'>" + citiesList.cityName + "</div>")
+            
+            // I am trying to get the text value of searched locations (previous location) in order to pass them back through the API key. 
+            let locationName = citiesList.cityName;
+
+            
+            // ////////////////////////////////////////////
+            
           });
+
+          $("#searched-location").on("click", function(){
+                let cityNameGrab1 = $("#searched-location").val()
+                let cityNameGrab2 = cityNameGrab1.substring(0, cityNameGrab1.indexOf(","));
+                city = cityNameGrab2
+                // stateName = $("")
+                runWeather();
+
+            })
       });
+      
+      
+
+
 
 </script>
 
@@ -284,14 +317,12 @@ $.ajax({
 
 <!-- GIVEN a weather dashboard with form inputs
 
-// WHEN I view the UV index
-// THEN I am presented with a color that indicates whether the conditions are favorable, moderate, or severe
-
-// WHEN I view future weather conditions for that city
-// THEN I am presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, and the humidity
-
 // Part II
 // WHEN I click on a city in the search history
 // THEN I am again presented with current and future conditions for that city
 // WHEN I open the weather dashboard
 // THEN I am presented with the last searched city forecast -->
+
+<!--  I need to get the value of the city and the state of previously searched cities when I click on them. These are in the previous searched card -->
+<!-- once I am able to get these values I need to pass the city and state name into the searchkey value -->
+<!-- once the names have been passed into the searchkey value I need to run the weather app again to reflect the weather for the previous searched city that I just clicked on -->

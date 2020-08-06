@@ -39,7 +39,7 @@ section {
 }
 
 .searched {
-    background-color: indigo;
+    background-color: coral;
 }
 
 .forecastContainer {
@@ -53,14 +53,6 @@ section {
 
 .capitalize {
     text-transform: capitalize;
-}
-
-.hide {
-    display: none;
-}
-
-.show {
-    display: block;
 }
 
 .favorable {
