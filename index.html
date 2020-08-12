@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,307 +10,101 @@
 
     <title>Weather App</title>
 </head>
+
 <body>
-   <section>
+    <section>
         <header>
-        <div class="w3-row-padding">
+            <div class="w3-row-padding">
                 <div class="w-3 l11">
-                <h1 class="header">Weather</h1>
-            </div>
-        
-        <div class="w3-container">
-            <form id="search-fields">
-                <div class="w3-row">
-                        <input class="w3-row-padding w3-mobile locationSearch" id="city-search" type="text" placeholder="City" value=""> 
-                        <input class="w3-row-padding w3-mobile locationSearch" id="state-search" type="text" placeholder="State Code" value="" > 
-                        <input class="w3-row-padding w3-mobile locationSearch" id="country-search" type="text" placeholder="Country Code" value="US" > 
-                        <button id="searchBtn"><i class="gg-search"></i></button>
+                    <h1 class="header">Weather</h1>
                 </div>
-            </form>
-        </div>
-        </div>
-    </header>
-       
-    <br>
-    
 
-    <div class="w3-row-padding">
-
-        <div class="w3-col l4">
-            <div class="w3-container" id="searchedCard">
-            <div class="searched">
-                <div class="w3-card-4">
-                    <p>Previous:</p>
-                    <div id="searched-cities"></div>
-                    <button class="w3-button" id="clearBtn">Clear Searched Cities</button>
+                <div class="w3-container">
+                    <form id="search-fields">
+                        <div class="w3-row">
+                            <input class="w3-row-padding w3-mobile locationSearch" id="city-search" type="text"
+                                placeholder="City" value="">
+                            <input class="w3-row-padding w3-mobile locationSearch" id="state-search" type="text"
+                                placeholder="State Code" value="">
+                            <input class="w3-row-padding w3-mobile locationSearch" id="country-search" type="text"
+                                placeholder="Country Code" value="US">
+                            <button id="searchBtn"><i class="gg-search"></i></button>
+                        </div>
+                    </form>
                 </div>
             </div>
+        </header>
+
+        <br>
+
+
+        <div class="w3-row-padding">
+
+            <div class="w3-col l4">
+                <div class="w3-container" id="searchedCard">
+                    <div class="searched">
+                        <div class="w3-card-4">
+                            <p>Previous:</p>
+                            <div id="searched-cities"></div>
+                            <button class="w3-button" id="clearBtn">Clear Searched Cities</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="w3-col l4">
-            <div class="w3-container" id="forecastCard">
-        <div class="forecastStyle">
-            <div class="w3-card-4">
-                <p>5 day forecast</p>
-                <div class="forecast"></div>
+            <div class="w3-col l4">
+                <div class="w3-container" id="forecastCard">
+                    <div class="forecastStyle">
+                        <div class="w3-card-4">
+                            <p>5 day forecast</p>
+                            <div class="forecast"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    </div>
-    
-    <div class="w3-col l4">
-        <div class="w3-container" id="currentCard">
-        <div class="current">
-            <div class="w3-card-4">
-                <p>Current Weather Conditions:</p>
-                <ul id="current-weather" style="list-style-type: none;"></ul>
+
+            <div class="w3-col l4">
+                <div class="w3-container" id="currentCard">
+                    <div class="current">
+                        <div class="w3-card-4">
+                            <p>Current Weather Conditions:</p>
+                            <ul id="current-weather" style="list-style-type: none;"></ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        </div>
-    </div>
 
-    <div id="uv-Modal" class="w3-modal">
-        <div class="w3-modal-content w3-card-4">
-            <div class="w3-container favorable">
-                <span onclick="document.getElementById('uv-Modal').style.display='none'" class="w3-button w3-white w3-display-topright">&times;</span>
-                <p id="uv-favorable">Todays reading is: </p>
-               <div class="w3-row">
+            <div id="uv-Modal" class="w3-modal">
+                <div class="w3-modal-content w3-card-4">
+                    <div class="w3-container favorable">
+                        <span onclick="document.getElementById('uv-Modal').style.display='none'"
+                            class="w3-button w3-white w3-display-topright">&times;</span>
+                        <p id="uv-favorable">Todays reading is: </p>
+                        <div class="w3-row">
 
-                   
-                <div class="w3-light-grey">
-                    <div class="w3-container w3-col w3-blue w3-center" style="height:24px; width:30%;">0.0-3.3 Favorable Conditions</div>
-                    <div class="w3-container w3-col w3-orange w3-center" style="height:24px; width:30%;">3.3-6.6 Moderate Conditions</div>
-                    <div class="w3-container w3-col w3-red w3-center" style="height:24px; width:30%;">6.6-10.0 Severe Conditions</div>
+
+                            <div class="w3-light-grey">
+                                <div class="w3-container w3-col w3-blue w3-center" style="height:24px; width:30%;">
+                                    0.0-3.3 Favorable Conditions</div>
+                                <div class="w3-container w3-col w3-orange w3-center" style="height:24px; width:30%;">
+                                    3.3-6.6 Moderate Conditions</div>
+                                <div class="w3-container w3-col w3-red w3-center" style="height:24px; width:30%;">
+                                    6.6-10.0 Severe Conditions</div>
+                            </div>
+                        </div>
+                        <p class="hide moderate" id="uv-moderate">Todays reading moderate</p>
+                        <p class="hide high" id="uv-high">Todays reading high</p>
+                    </div>
+                </div>
             </div>
+
         </div>
-                <p class="hide moderate" id="uv-moderate">Todays reading moderate</p>
-                <p class="hide high" id="uv-high">Todays reading high</p>
-            </div>
-        </div>
-    </div>
-       
-    </div>
-    
-</section>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </section>
 
-<script type="text/JavaScript">
-let date = new Date()
-let todaysDate = date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear()
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-// clear out localStorage:
-$("#clearBtn").click(function() {
-   localStorage.clear();
-});
-
-
-$("#searchBtn").on("click", function(event){
-event.preventDefault();
-runWeather();
-
-});
-
-// these are testing my ability to be able to click on previously searched locations and have the weather for that location show up
-let test = "Kirkland, Wa"
-
-let test2 = test.split(",", 1[0]);
-
-console.log(test2[1])
-
-// ////////////////////////////////
-
-function runWeather(){
-let city = $("#city-search").val();
-
-let state = $("#state-search").val();
-
-let country = $("#country-search").val();
-
-let searchKey = city + "," + state + "," + country
-
-let APIKey = "a4a8fbe7c144be93020e3a7f15b622db"
-
-let forecastURL = `https://api.openweathermap.org/data/2.5/forecast?q=${searchKey}&appid=${APIKey}`;
-
-let uvIndex = $("<li>")
-uvIndex.addClass("uvIndex")
-uvIndex.attr("id", "uv-Index")
-uvIndex.addClass("w3-button")
-
-
-$.ajax({
-      url: forecastURL,
-      method: "GET"
-      
-    })
-      .then(function(response1) {
-
-        // console.log(forecastURL);
-
-        console.log(response1);
-
-        $(".forecast").empty()
-        $("#current-weather").empty()
-        
-        // this will give me an average out of the next 5 days.
-        for (let i = 0; i < response1.list.length; i+=8) {
-
-            
-
-           let hourlyForecast =  response1.list[i].weather[0];
-            
-            let localDate = new Date(response1.list[i].dt * 1000).toLocaleDateString();
-
-            // this sets the five day forecast
-            console.log(response1.list[i]);
-    
-            let forecastDate = $("<label>");
-                forecastDate.text(localDate)
-
-            let forecastImg = $("<img>")
-                let weatherIcon = `http://openweathermap.org/img/wn/${hourlyForecast.icon}@2x.png`;
-                forecastImg.attr("src", weatherIcon);
-            
-            
-            let forecastList = $("<ul style='list-style-type:none'</ul>")
-            let forecastTemp = $("<li>");
-                forecastTemp.text(((response1.list[i].main.temp-273.15) * 1.80 + 32).toFixed(0) + " F ");
-
-            let forecastHumid = $("<li>");
-                forecastHumid.text(" Humidity: " + response1.list[i].main.humidity)
-
-                forecastList.append(forecastTemp).append(forecastHumid)
-            
-                
-            let forecast = $("<div class='forecastContainer'></div>");
-
-            forecast.append(forecastDate).append(forecastImg).append(forecastList);
-
-
-            $(".forecast").append(forecast);
-  
-
-        } 
-
-         // this sets the current weather
-                // need to copy/create new variables for everything from line 97 to 119 but set it to index 0 for the response1.list loop
-                let currentWeather = response1.list[0].weather[0];
-                let currentDate = new Date(response1.list[0].dt * 1000).toLocaleDateString();
-                    
-                let today = $("<li>");
-                    today.text(currentDate);
-
-                
-                let currentImg = $("<img>");
-                    let todaysIcon = `http://openweathermap.org/img/wn/${currentWeather.icon}@2x.png`
-                    currentImg.attr("src", todaysIcon)
-                
-                let currentTemp = $("<li>")
-                    currentTemp.text(((response1.list[0].main.temp-273.15) * 1.80 + 32).toFixed(0) + " F ")
-
-                let currentHumid = $("<li>");
-                    currentHumid.text("Humidity: " + response1.list[0].main.humidity)
-                
-                let currentWind = $("<li>")
-                    currentWind.text("Wind: " + response1.list[0].wind.speed + "mph")
-                
-                let currentWeatherDisplay = $("<li></li>")
-                
-                let currentLocation = $("#city-search").val() + ", " + $("#state-search").val()
-
-                currentWeatherDisplay.append(currentWeather).append(today).append(currentImg).append(currentTemp).append(currentHumid).append(currentWind).append(uvIndex)
-
-                $("#current-weather").append(currentLocation).append(currentWeatherDisplay)
-        
-
-
-            // This sets the previous searched cities
-            let cityName = $("#city-search").val()
-
-            let stateName = $("#state-search").val()
-
-            let locationSearch = cityName + ", " + stateName
-
-            let searchedLocations = $("<div class='capitalize w3-button'>")    
-            searchedLocations.attr("id", "searched-location")       
-
-            searchedLocations.text(locationSearch)
-
-
-            $("#searched-cities").append(searchedLocations)
-           
-
-            let citiesList = JSON.parse(localStorage.getItem("cities")) || [];
-
-            let newCity = {
-                "cityName": cityName
-            }
-            citiesList.push(newCity);
-            localStorage.setItem("cities", JSON.stringify(citiesList))
-            
-
-
-        return response1.city.coord
-          
-      }) 
-            // This gives me the UV index
-        .then(function(response2) {
-            console.log(response2)
-            let uvURL = `http://api.openweathermap.org/data/2.5/uvi?appid=${APIKey}&lat=${response2.lat}&lon=${response2.lon}`
-
-     $.ajax({
-         url: uvURL,
-         method: "GET"
-     })
-        .then(function(response3){
-           console.log(uvURL)
-           console.log(response3)
-
-           uvIndex.text("UV Index: " + response3.value)
-
-           $("#uv-Index").on("click", function(){
-            $("#uv-Modal").attr("style", "display:block")
-           }) 
-           
-
-        })
-
-    })
-      
-      };
-
-        // This allows the cities searched to show up after the page has been reloaded
-      $(document).ready(function showCities(){
-          let citiesList = JSON.parse(localStorage.getItem("cities")) || [];
-          $("#searched-cities").empty();
-          citiesList.forEach(function(citiesList){
-            $("#searched-cities").append("<div class='capitalize' id='searched-City'>" + citiesList.cityName + "</div>")
-            
-            // I am trying to get the text value of searched locations (previous location) in order to pass them back through the API key. 
-            let locationName = citiesList.cityName;
-
-            
-            // ////////////////////////////////////////////
-            
-          });
-
-          $("#searched-location").on("click", function(){
-                let cityNameGrab1 = $("#searched-location").val()
-                let cityNameGrab2 = cityNameGrab1.substring(0, cityNameGrab1.indexOf(","));
-                city = cityNameGrab2
-                // stateName = $("")
-                runWeather();
-
-            })
-      });
-      
-      
-
-
-
-</script>
+    <script src="script.js"></script>
 
 </body>
 
