@@ -152,8 +152,6 @@ function runWeather(city, state) {
                     $("#uv-Index").on("click", function () {
                         $("#uv-Modal").attr("style", "display:block")
                     })
-
-
                 })
 
         })
